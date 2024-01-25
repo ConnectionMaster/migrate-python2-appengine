@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START mod0_baseline]
 import os
 import webapp2
 from google.appengine.ext import ndb
@@ -28,8 +29,7 @@ def store_visit(remote_addr, user_agent):
 
 def fetch_visits(limit):
     'get most recent visits'
-    return (v.to_dict() for v in Visit.query().order(
-            -Visit.timestamp).fetch(limit))
+    return Visit.query().order(-Visit.timestamp).fetch(limit)
 
 class MainHandler(webapp2.RequestHandler):
     'main application (GET) handler'
@@ -42,3 +42,4 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
 ], debug=True)
+# [END mod0_baseline]

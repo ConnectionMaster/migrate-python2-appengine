@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START mod1b_flask]
 from flask import Flask, render_template, request
 from google.appengine.api import wrap_wsgi_app
 from google.appengine.ext import ndb
 
 app = Flask(__name__)
 app.wsgi_app = wrap_wsgi_app(app.wsgi_app)
+
 
 class Visit(ndb.Model):
     'Visit entity registers visitor IP address & timestamp'
@@ -30,8 +32,8 @@ def store_visit(remote_addr, user_agent):
 
 def fetch_visits(limit):
     'get most recent visits'
-    return (v.to_dict() for v in Visit.query().order(
-            -Visit.timestamp).fetch(limit))
+    return Visit.query().order(-Visit.timestamp).fetch(limit)
+
 
 @app.route('/')
 def root():
@@ -39,3 +41,4 @@ def root():
     store_visit(request.remote_addr, request.user_agent)
     visits = fetch_visits(10)
     return render_template('index.html', visits=visits)
+# [END mod1b_flask]

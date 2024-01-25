@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+<title>VisitMe Example</title>
+</head>
+<body>
+<p>
+Welcome, {{ who }} <code>{{ admin }}</code>
+<button id="logbtn">{{ sign }}</button>
+</p><hr>
+
+<h1>VisitMe example</h1>
+<h3>Last 10 visits</h3>
+<ul>
+{% for visit in visits %}
+    <li>{{ visit.timestamp.ctime() }} from {{ visit.visitor }}</li>
+{% endfor %}
+</ul>
+
+<script>
+document.getElementById("logbtn").onclick = () => {
+    window.location.href = '{{ link }}';
+};
+</script>
+</body>
+</html>

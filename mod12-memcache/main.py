@@ -1,4 +1,4 @@
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,8 +30,7 @@ def store_visit(remote_addr, user_agent):
 
 def fetch_visits(limit):
     'get most recent visits'
-    return (v.to_dict() for v in Visit.query().order(
-            -Visit.timestamp).fetch(limit))
+    return Visit.query().order(-Visit.timestamp).fetch(limit)
 
 @app.route('/')
 def root():
@@ -41,8 +40,8 @@ def root():
     visitor = '{}: {}'.format(ip_addr, usr_agt)
     visits = memcache.get('visits')
 
-    # if cache empty or new visitor, register visit & run DB query
-    if not visits or visits[0]['visitor'] != visitor:
+    # register visit & run DB query if cache empty or new visitor
+    if not visits or visits[0].visitor != visitor:
         store_visit(ip_addr, usr_agt)
         visits = list(fetch_visits(10))
         memcache.set('visits', visits, HOUR)  # set() not add()

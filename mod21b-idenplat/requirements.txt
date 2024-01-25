@@ -1,0 +1,5 @@
+flask
+google-auth
+google-cloud-ndb
+google-cloud-resource-manager
+firebase-admin
